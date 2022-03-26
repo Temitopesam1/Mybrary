@@ -1,7 +1,5 @@
 const express = require("express")
-const req = require("express/lib/request")
 const author = require("../models/author")
-// const author = require("../models/author")
 const router = express.Router()
 const Author = require("../models/author")
 
@@ -40,7 +38,7 @@ router.post("/", async (req,res) => {
     } catch{
         res.render("authors/new", {
             author: author,
-            errorMessage: "Error ceating Author"
+            errorMessage: "Error creating Author"
         }) 
           
     }
