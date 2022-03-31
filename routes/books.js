@@ -1,9 +1,8 @@
 const express = require("express")
 const router = express.Router()
-// const multer = require("multer")
 const Book = require("../models/book")
 const Author = require("../models/author")
-const imageMineTypes = ["images/jpeg", "images/png", "images/gif"]
+const imageMimeTypes = ["images/jpeg", "images/png", "images/gif"]
 
 // All books
 router.get("/", async (req,res) => {
@@ -35,24 +34,24 @@ router.get("/new", async (req,res) => {
    renderNewPage(res, new Book())
 })
 
-// Create book route
-router.post("/",  async (req,res) => {
+// Create Book Route
+router.post('/', async (req, res) => {
     const book = new Book({
-        title: req.body.title,
-        author: req.body.author,
-        publishDate: new Date(req.body.publishDate),
-        pageCount: req.body.pageCount,
-        description: req.body.description
+      title: req.body.title,
+      author: req.body.author,
+      publishDate: new Date(req.body.publishDate),
+      pageCount: req.body.pageCount,
+      description: req.body.description
     })
     saveCover(book, req.body.cover)
-    try{
-        const newBook = await book.save()
-        // res.redirect("books/${newBook.id}")
-        res.redirect("books")
-    } catch{
-        renderNewPage(res, book, true)
+  
+    try {
+      const newBook = await book.save()
+      res.redirect(`books/${newBook.id}`)
+    } catch {
+      renderNewPage(res, book, true)
     }
-})
+  })
 
 
 async function renderNewPage(res, book, hasError = false) {
@@ -70,11 +69,12 @@ async function renderNewPage(res, book, hasError = false) {
 }
 function saveCover(book, coverEncoded) {
     if (coverEncoded == null) return
-    const cover = JSON.parse(coverEncoded)
-    if (cover != null && imageMineTypes.includes(cover.type)) {
+        const cover = JSON.parse(coverEncoded)
+    if (cover != null && imageMimeTypes.includes(cover.type)) {
         book.coverImage = new Buffer.from(cover.data, "base64")
         book.coverImageType = cover.type
     }
 }
  
 module.exports = router
+
