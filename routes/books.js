@@ -106,15 +106,15 @@ router.delete('/:id', async (req, res) => {
     await book.remove()
     res.redirect('/books')
   } catch {
-    if (book != null) {
-      res.render('books/show', {
-        book: book,
-        errorMessage: 'Could not remove book'
-      })
-    } else {
-      res.redirect('/')
+        if (book != null) {
+        res.render('books/show', {
+            book: book,
+            errorMessage: 'Could not remove book'
+        })
+        } else {
+        res.redirect('/')
+        }
     }
-  }
 })
 
 async function renderNewPage(res, book, hasError = false) {
